@@ -5,14 +5,26 @@ export default function NewtonsCradleMatter() {
   const sceneRef = useRef(null);
 
   useEffect(() => {
-    const { Engine, Render, Runner, Bodies, Composite, Constraint, Body } = Matter;
+    const {
+      Engine,
+      Render,
+      Runner,
+      Bodies,
+      Composite,
+      Constraint,
+      Body,
+      Mouse,
+      MouseConstraint,
+      Query,
+      Events,
+    } = Matter;
 
     const engine = Engine.create();
     const world = engine.world;
 
     const container = sceneRef.current;
-    const width = 260;   // fixed box width
-    const height = 220;  // fixed box height
+    const width = 750;
+    const height = 520;
 
     const render = Render.create({
       element: container,
@@ -23,26 +35,23 @@ export default function NewtonsCradleMatter() {
         wireframes: false,
         background: 'transparent',
         pixelRatio: 2,
-      }
+      },
     });
 
-    // ---- layout tuned for 260x220 ----
+    // ----- CENTERED LAYOUT -----
     const ballRadius = 22;
     const numBalls = 5;
     const spacing = ballRadius * 2.0;
 
-    const anchorY = 30;          // top anchor row
-    const stringLength = 90;     // string length
+    // vertical centering: anchor roughly at 1/4 height, strings reach mid
+    const anchorY = height * 0.5;      // 0.25 * 520 ≈ 130
+    const stringLength = height * 0.25; // 0.25 * 520 ≈ 130
     const totalWidth = (numBalls - 1) * spacing;
+
+    // center group horizontally
     const startX = width / 2 - totalWidth / 2;
 
-      const ballColors = [
-      '#0B3B75', // dark blue
-      '#F3F0D3', // dark blue
-      '#FF6A00', // orange
-      '#F3F0D3', // off white
-      '#FF6A00'  // orange
-    ];
+    const ballColors = ['#0B3B75', '#F3F0D3', '#FF6A00', '#F3F0D3', '#FF6A00'];
 
     const balls = [];
 
@@ -84,18 +93,63 @@ export default function NewtonsCradleMatter() {
       Composite.add(world, [ball, constraint, topDot]);
     }
 
-    // small initial pull so ball stays inside
+    // initial pull (kept modest so it stays inside)
     Body.setPosition(balls[0], {
-    x: balls[0].position.x - 55,  // was -45
-    y: balls[0].position.y - 20,  // was -18
+      x: balls[0].position.x - 45,
+      y: balls[0].position.y - 15,
     });
     Body.setVelocity(balls[0], { x: 0, y: 0 });
+
+    // --- Mouse interaction (first and last ball) ---
+    const mouse = Mouse.create(render.canvas);
+
+    const mouseConstraint = MouseConstraint.create(engine, {
+      mouse,
+      constraint: {
+        stiffness: 0.2,
+        render: { visible: false },
+      },
+    });
+
+    const allowed = [balls[0], balls[balls.length - 1]];
+
+    Events.on(mouseConstraint, 'mousedown', () => {
+      const hit = Query.point(allowed, mouse.position);
+      console.log('clicked');
+      if (hit.length === 0) {
+        mouseConstraint.body = null;
+      }
+    });
+
+    Events.on(mouseConstraint, 'mouseup', () => {
+      if (mouseConstraint.body) {
+        console.log('Released because left mouse button was lifted');
+        mouseConstraint.body = null;
+        mouseConstraint.constraint.pointA = { x: 0, y: 0 };
+        mouseConstraint.constraint.pointB = { x: 0, y: 0 };
+      }
+    });
+
+    Composite.add(world, mouseConstraint);
+    render.mouse = mouse;
+
+    const canvas = render.canvas;
+    const handleLeave = () => {
+      if (mouseConstraint.body) {
+         console.log('Released because mouse left the canvas while holding a ball');
+        mouseConstraint.body = null;
+        mouseConstraint.constraint.pointA = { x: 0, y: 0 };
+        mouseConstraint.constraint.pointB = { x: 0, y: 0 };
+      }
+    };
+    canvas.addEventListener('mouseleave', handleLeave);
 
     const runner = Runner.create();
     Runner.run(runner, engine);
     Render.run(render);
 
     return () => {
+      canvas.removeEventListener('mouseleave', handleLeave);
       Runner.stop(runner);
       Render.stop(render);
       render.canvas?.remove();
@@ -108,11 +162,13 @@ export default function NewtonsCradleMatter() {
     <div
       ref={sceneRef}
       style={{
-        width: '260px',
-        height: '220px',
-        pointerEvents: 'none',
+        width: '750px',
+        height: '520px',
+        pointerEvents: 'auto',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     />
   );
 }
-
