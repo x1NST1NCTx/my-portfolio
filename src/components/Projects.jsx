@@ -1,9 +1,14 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Modal from "./Modal";
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null);
+  const hasAnimatedRef = useRef(false);
+
+  useEffect(() => {
+    hasAnimatedRef.current = true;
+  }, []);
 
   const projects = [
     {
@@ -29,17 +34,7 @@ export default function Projects() {
           builds and deployments set up through GitLab CI.
         </p>
       </>),
-      tags: [
-        "React",
-        "Node.js",
-        "Java",
-        "Microservices",
-        "MySQL",
-        "Neo4j",
-        "Docker",
-        "Podman",
-        "Kubernetes",
-      ],
+      tags: ["React", "Node.js", "Java", "Microservices", "MySQL", "Neo4j", "Docker", "Podman", "Kubernetes"],
     },
     {
       id: 2,
@@ -61,21 +56,32 @@ export default function Projects() {
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
     <>
       <motion.section
         id="projects"
         className="min-h-screen py-24 px-6 max-w-6xl mx-auto"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        variants={containerVariants}
+        initial={hasAnimatedRef.current ? false : "hidden"}
+        animate={hasAnimatedRef.current ? false : "visible"}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.1 }}
       >
         <motion.h2
           className="text-3xl font-semibold text-orange-500 mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
+          variants={itemVariants}
         >
           Projects
         </motion.h2>
@@ -85,9 +91,7 @@ export default function Projects() {
             <motion.div
               key={project.id}
               className="border border-white/10 p-6 rounded-xl hover:border-[#FF6A00] transition cursor-pointer relative group"
-              initial={{ opacity: 0, y: 50, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.0 }}
+              variants={itemVariants}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               style={{ willChange: "transform, opacity" }}
@@ -105,10 +109,7 @@ export default function Projects() {
         </div>
       </motion.section>
 
-      <Modal
-        isOpen={!!selectedProject}
-        onClose={() => setSelectedProject(null)}
-      >
+      <Modal isOpen={!!selectedProject} onClose={() => setSelectedProject(null)}>
         {selectedProject && (
           <>
             <h3 className="text-2xl font-semibold text-[#FF6A00] mb-4">
@@ -117,10 +118,7 @@ export default function Projects() {
             {selectedProject.details}
             <div className="flex flex-wrap gap-2 mb-6">
               {selectedProject.tags.map((t) => (
-                <span
-                  key={t}
-                  className="text-xs bg-[#FF6A00]/20 text-[#FF6A00] px-2 py-1 rounded"
-                >
+                <span key={t} className="text-xs bg-[#FF6A00]/20 text-[#FF6A00] px-2 py-1 rounded">
                   {t}
                 </span>
               ))}
