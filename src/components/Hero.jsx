@@ -43,10 +43,10 @@ export default function Hero() {
               scale: 1.1,
               backgroundColor: "#f97316",
               color: "#000000",
-              transition: { duration: 0.2 },
+              transition: { duration: 0 },
             }}
             whileTap={{ scale: 0.9 }}
-            transition={{ duration: 0.2, delay: 0.2 }}
+            transition={{ duration: 0, delay: 0 }}
           >
             View Projects
           </motion.a>
