@@ -168,6 +168,8 @@ export default function NewtonsCradleMatter() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        border: '3px solid #FF6A00',
+        boxSizing: 'border-box',
       }}
     />
   );
