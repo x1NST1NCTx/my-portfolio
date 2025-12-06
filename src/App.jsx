@@ -14,17 +14,31 @@ function AppContent() {
 
   return (
     <div className="App">
-      <BackgroundCanvas />
-      <div className="content-layer">
+      {/* Desktop + tablet: current behavior */}
+      <div className="hidden lg:block">
+        <BackgroundCanvas />
+        <div className="content-layer">
+          <Navbar />
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<Hero />} />
+              <Route path="/skills" element={<Skills />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/contact" element={<Contact />} />
+            </Routes>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* Mobile: simple scroll page reusing same sections */}
+      <div className="block lg:hidden">
         <Navbar />
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<Hero />} />
-            <Route path="/skills" element={<Skills />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/contact" element={<Contact />} />
-          </Routes>
-        </AnimatePresence>
+        <main className="flex flex-col gap-24 px-4 py-8">
+          <Hero />
+          <Skills />
+          <Projects />
+          <Contact />
+        </main>
       </div>
     </div>
   );

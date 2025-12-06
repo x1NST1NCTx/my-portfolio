@@ -20,32 +20,7 @@ body {
   min-height: 100vh;
 }
 
-/* canvas behind content */
-.background-canvas {
-  position: fixed !important;
-  inset: 0;
-  z-index: 0;
-}
-
-/* all your UI above the canvas */
-.content-layer {
-  position: relative;
-  z-index: 1;
-  pointer-events: auto;
-}
-
-/* re‑enable pointer events for actual interactive UI elements */
-.content-layer a,
-.content-layer button {
-  pointer-events: auto;
-}
-
-/* hero transparent so background is visible */
-.hero-section {
-  background: transparent;
-}
-
-/* was pointer-events: none */
+/* canvas behind content (desktop) */
 .background-canvas {
   position: fixed !important;
   inset: 0;
@@ -55,14 +30,14 @@ body {
   pointer-events: auto !important;
 }
 
-.hero-section {
-  background: transparent;
-  /* optional: pointer-events: none; */
+/* all your UI above the canvas */
+.content-layer {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
 }
 
-.content-layer a,
-.content-layer button,
-.content-layer [role="button"],
-.content-layer .clickable {
-  pointer-events: auto;
+/* hero transparent so background is visible */
+.hero-section {
+  background: transparent;
 }

@@ -47,7 +47,7 @@ export default function Hero() {
             whileTap={{ scale: 0.9 }}
             transition={{ duration: 0, delay: 0 }}
           >
-            View Projects
+            Download Resume
           </motion.a>
         </div>
 
