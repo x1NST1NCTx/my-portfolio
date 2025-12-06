@@ -1,18 +1,18 @@
-import { useRef, useMemo } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useRef, useMemo, useEffect } from "react";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import starImage from "../../assets/star.svg"
 
 export function BackgroundScene() {
     const pointsRef = useRef();
-    const { pointer } = useThree();
+    const mouse = useRef({ x: 0, y: 0 });
     const texture = useMemo(
         () => new THREE.TextureLoader().load(starImage),
         []
     );
 
+    // 200 random points
     const count = 200;
-
     const basePositions = useMemo(() => {
         const arr = new Float32Array(count * 3);
         for (let i = 0; i < count; i++) {
@@ -22,8 +22,19 @@ export function BackgroundScene() {
         }
         return arr;
     }, []);
-
     const positions = useMemo(() => basePositions.slice(), [basePositions]);
+
+    // listen on the whole window
+    useEffect(() => {
+        function handleMove(e) {
+            const xNorm = e.clientX / window.innerWidth;   // 0..1
+            const yNorm = e.clientY / window.innerHeight;  // 0..1
+            mouse.current.x = (xNorm - 0.5) * 40;          // match ±20
+            mouse.current.y = (0.5 - yNorm) * 25;          // match ±12.5
+        }
+        window.addEventListener("pointermove", handleMove);
+        return () => window.removeEventListener("pointermove", handleMove);
+    }, []);
 
     useFrame((state) => {
         if (!pointsRef.current) return;
@@ -33,9 +44,10 @@ export function BackgroundScene() {
 
         pointsRef.current.rotation.y = t * 0.1;
 
-        const mx = pointer.x * 20;
-        const my = pointer.y * 12.5;
+        const mx = mouse.current.x;
+        const my = mouse.current.y;
         const R = 10;
+
         for (let i = 0; i < count; i++) {
             const idx = i * 3;
 

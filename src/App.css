@@ -31,7 +31,7 @@ body {
 .content-layer {
   position: relative;
   z-index: 1;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 /* re‑enable pointer events for actual interactive UI elements */
@@ -53,4 +53,16 @@ body {
   height: 100vh !important;
   z-index: 0 !important;
   pointer-events: auto !important;
+}
+
+.hero-section {
+  background: transparent;
+  /* optional: pointer-events: none; */
+}
+
+.content-layer a,
+.content-layer button,
+.content-layer [role="button"],
+.content-layer .clickable {
+  pointer-events: auto;
 }
