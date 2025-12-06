@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
-import Modal from "./Modal";
+import Modal from "../Modal/Modal";
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null);

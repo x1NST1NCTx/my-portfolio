@@ -1,9 +1,8 @@
-import NewtonsCradleMatter from "./NewtonsCradeMatter";
 import { motion } from "framer-motion";
 
 export default function Hero() {
   return (
-    <section className="min-h-screen flex items-center px-6 max-w-6xl mx-auto">
+    <section className="hero-section min-h-screen flex items-center px-6 max-w-6xl mx-auto bg-transparent ">
       <div className="flex w-full items-center justify-between gap-8">
         {/* Left side */}
         <div>
@@ -52,15 +51,6 @@ export default function Hero() {
           </motion.a>
         </div>
 
-        {/* Right side: cradle – only visible md and up */}
-        <motion.div
-          className="hidden md:flex items-center justify-center w-[260px] h-[220px]"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        >
-          <NewtonsCradleMatter />
-        </motion.div>
       </div>
     </section>
   );
