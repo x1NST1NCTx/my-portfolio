@@ -1,12 +1,13 @@
 import { useRef, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import starImage from "../../assets/star.svg"
 
 export function BackgroundScene() {
     const pointsRef = useRef();
     const { pointer } = useThree();
     const texture = useMemo(
-        () => new THREE.TextureLoader().load("/src/assets/star.svg"),
+        () => new THREE.TextureLoader().load(starImage),
         []
     );
 
