@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
+import { FaGithub, FaLinkedin, FaTelegramPlane } from "react-icons/fa";
+import { MdEmail, MdDescription } from "react-icons/md";
 
 export default function Hero() {
   return (
-    <section className="hero-section min-h-screen flex items-center px-6 max-w-6xl mx-auto bg-transparent ">
+    <section className="hero-section min-h-screen flex items-center px-6 max-w-6xl mx-auto bg-transparent">
       <div className="flex w-full items-center justify-between gap-8">
-        {/* Left side */}
         <div>
+          {/* existing heading / text */}
           <motion.h1
             className="text-5xl md:text-6xl font-light leading-tight"
             initial={{ opacity: 0, y: 50 }}
@@ -33,24 +35,46 @@ export default function Hero() {
             applications.
           </motion.p>
 
-          <motion.a
-            href="/projects"
-            className="inline-block mt-8 px-6 py-3 border border-orange-500 text-orange-500 rounded-lg transition-all"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            whileHover={{
-              scale: 1.1,
-              backgroundColor: "#f97316",
-              color: "#000000",
-              transition: { duration: 0 },
-            }}
-            whileTap={{ scale: 0.9 }}
-            transition={{ duration: 0, delay: 0 }}
-          >
-            Download Resume
-          </motion.a>
-        </div>
 
+
+          {/* Social icons row */}
+          <div className="mt-6 flex items-center gap-6 text-white/80">
+            <a
+              href="https://github.com/x1NST1NCTx"
+              target="_blank"
+              rel="noreferrer"
+              title="GitHub"
+              className="hover:text-orange-400 transition transform hover:-translate-y-0.5"
+            >
+              <FaGithub size={22} />
+            </a>
+            <a
+              href="mailto:avykera@gmail.com"
+              title="Email"
+              className="hover:text-orange-400 transition transform hover:-translate-y-0.5"
+            >
+              <MdEmail size={22} />
+            </a>
+            <a
+              href="https://linkedin.com/in/annish-vykera-1442881a1"
+              target="_blank"
+              rel="noreferrer"
+              title="LinkedIn"
+              className="hover:text-orange-400 transition transform hover:-translate-y-0.5"
+            >
+              <FaLinkedin size={22} />
+            </a>
+            <a
+              href="https://docs.google.com/document/d/1SV0KI5uEOoGHBTxY3AaXOKEujOQJC8QCpit8UrJx4oU/edit?usp=drive_link"
+              target="_blank"
+              rel="noreferrer"
+              title="Resume"
+              className="hover:text-orange-400 transition transform hover:-translate-y-0.5"
+            >
+              <MdDescription size={22} />
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );
