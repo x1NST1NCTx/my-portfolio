@@ -24,7 +24,7 @@ function AppContent() {
               <Route path="/" element={<Hero />} />
               <Route path="/skills" element={<Skills />} />
               <Route path="/projects" element={<Projects />} />
-              <Route path="/contact" element={<Contact />} />
+
             </Routes>
           </AnimatePresence>
         </div>
@@ -37,7 +37,7 @@ function AppContent() {
           <Hero />
           <Skills />
           <Projects />
-          <Contact />
+
         </main>
       </div>
     </div>
